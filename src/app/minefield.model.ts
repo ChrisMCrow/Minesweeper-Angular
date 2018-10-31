@@ -1,5 +1,5 @@
 export class Minefield {
-    constructor(public rows: Row[] = [], public mineNumber: number = 20) { }
+    constructor(public rows: Row[] = [], public mineNumber: number = 10) { }
     createMinefield() {
         for(let y = 0; y < 9; y++) {
             let newRow = new Row(y);
@@ -25,46 +25,27 @@ export class Minefield {
     }
 
     getNumbers() {
-        for (let y = 0; y < 9; y++) {
-            for (let x = 0; x < 9; x++) {
+        for(let y = 0; y < 9; y++) {
+            for(let x = 0; x < 9; x++) {
                 let thisSpot = this.getSpot(x, y);
-               
-                if (this.getSpot(x-1, y) != undefined) { 
-                    console.log(this.getSpot(x-1, y));
-                    if (this.getSpot(x-1, y).isMine) {
-                        thisSpot.countMines++;
+                for (let i = -1; i <= 1; i++) {
+                    for (let j = -1; j <= 1; j++) {
+                        if (this.getSpot(x + i, y + j)) {
+                            if (this.getSpot(x + i, y + j).isMine) {
+                                thisSpot.countMines++;
+                            }
+                        }
                     }
-                }
-                if ((this.getSpot(x-1, y+1)).isMine) {
-                    thisSpot.countMines++;
-                }
-                if ((this.getSpot(x, y+1)).isMine) {
-                    thisSpot.countMines++;
-                }
-                if (this.getSpot(x+1, y+1).isMine) {
-                    thisSpot.countMines++;
-                }
-                if (this.getSpot(x+1, y).isMine) {
-                    thisSpot.countMines++;
-                }
-                if (this.getSpot(x+1, y-1).isMine) {
-                    thisSpot.countMines++;
-                }
-                if (this.getSpot(x, y-1).isMine) {
-                    thisSpot.countMines++;
-                }
-                if (this.getSpot(x-1, y-1).isMine) {
-                    thisSpot.countMines++;
                 }
             }
         }
     }
 
     getSpot(x, y){
-        if (x >= 0 && x < 9) {
-            if (y >=0 && y < 9) {
-                return this.rows[y].spots[x];
-            }
+        if(x >= 0 && x < 9 && y >=0 && y < 9) {
+            return this.rows[y].spots[x];
+        } else {
+            return null;
         }
     }
 }
