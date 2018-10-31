@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
         }
       }
     }
-    if (counter === 81 - this.game.mineNumber) {
+    if (counter === Math.pow(this.game.grid,2) - this.game.mineNumber) {
       this.game.gameStatus = "You Win";
     }
   }
