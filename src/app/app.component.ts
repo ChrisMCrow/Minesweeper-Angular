@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Minefield, Row, Spot } from './minefield.model';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -8,12 +9,13 @@ import { Minefield, Row, Spot } from './minefield.model';
 })
 export class AppComponent implements OnInit {
   title = 'app';
-  newMinefield: Minefield;
+  gridSize: number = 9;
+  game: Minefield;
 
   uncoverSpot(spot) {
-    if (this.newMinefield.gameStatus === "In Progress") {
+    if (this.game.gameStatus === "In Progress") {
       if (spot.countMines === 0) {
-        this.newMinefield.expandBlanks(spot);
+        this.game.expandBlanks(spot);
       }
       if (spot.isMine) {
         spot.clickedMine = true;
@@ -25,27 +27,31 @@ export class AppComponent implements OnInit {
 
   isGameOver() {
     let counter: number = 0;
-    for(let y = 0; y < 9; y++) {
-      for(let x = 0; x < 9; x++) {
-        let checkedSpot = this.newMinefield.getSpot(x, y);
+    for(let y = 0; y < this.game.grid; y++) {
+      for(let x = 0; x < this.game.grid; x++) {
+        let checkedSpot = this.game.getSpot(x, y);
         if (checkedSpot.isMine && !checkedSpot.isCovered) {
-          this.newMinefield.gameStatus = "Game Over";
-          this.newMinefield.revealMines();
+          this.game.gameStatus = "Game Over";
+          this.game.revealMines();
         } else if (!checkedSpot.isCovered) {
           counter++;
         }
       }
     }
-    if (counter === 81 - this.newMinefield.mineNumber) {
-      this.newMinefield.gameStatus = "You Win";
+    if (counter === 81 - this.game.mineNumber) {
+      this.game.gameStatus = "You Win";
     }
   }
 
+  newGame(grid: string, difficulty: string) {
+    console.log(difficulty);
+    let gridNumber: number = parseInt(grid);
+    this.game = new Minefield(gridNumber, difficulty);
+    this.game.createMinefield();
+    this.game.plantMine();
+    this.game.getNumbers();
+  }
   
   ngOnInit() {
-    this.newMinefield = new Minefield();
-    this.newMinefield.createMinefield();
-    this.newMinefield.plantMine();
-    this.newMinefield.getNumbers();
   }
 }

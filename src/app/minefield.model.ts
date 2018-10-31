@@ -1,10 +1,28 @@
 export class Minefield {
-    constructor(public rows: Row[] = [], public mineNumber: number = 10, public gameStatus: string = "In Progress") { }
+    public rows: Row[] = [];
+    public gameStatus: string = "In Progress";
+    public mineNumber: number = 0;
+    constructor(public grid: number = 9, public difficulty?: string) {
+        if (this.difficulty === "easy") {
+            this.mineNumber = Math.floor(Math.pow(this.grid, 2) * .1);
+        }
+        if (this.difficulty === "intermediate") {
+            this.mineNumber = Math.floor(Math.pow(this.grid, 2) * .15);
+        }
+        if (this.difficulty === "difficult") {
+            this.mineNumber = Math.floor(Math.pow(this.grid, 2) * .2);
+        }
+        if (this.difficulty === "expert") {
+            this.mineNumber = Math.floor(Math.pow(this.grid, 2) * .25);
+        }
+        console.log(this.mineNumber);
+    }
+
     createMinefield() {
-        for(let y = 0; y < 9; y++) {
+        for(let y = 0; y < this.grid; y++) {
             let newRow = new Row(y);
             this.rows.push(newRow);
-            for(let x = 0; x < 9; x++) {
+            for(let x = 0; x < this.grid; x++) {
                 let newSpot = new Spot(x, y);
                 this.rows[y].spots.push(newSpot);
             }
@@ -12,21 +30,25 @@ export class Minefield {
     }
 
     plantMine(){
-        for(let i = 0; i<this.mineNumber; i++){
-            let x = Math.floor(Math.random()*9);
-            let y = Math.floor(Math.random()*9);
-            let mineSpot = this.getSpot(x,y);
-            if (mineSpot.isMine) {
-                i--;
-            } else {
-                mineSpot.isMine = true;
+        if (this.mineNumber < Math.pow(this.grid, 2)) {
+            for (let i = 0; i<this.mineNumber; i++){
+                let x = Math.floor(Math.random() * this.grid);
+                let y = Math.floor(Math.random() * this.grid);
+                let mineSpot = this.getSpot(x,y);
+                if (mineSpot.isMine) {
+                    i--;
+                } else {
+                    mineSpot.isMine = true;
+                }
             }
+        } else {
+            alert("Number of mines exceeds possible tiles.");
         }
     }
 
     getNumbers() {
-        for(let y = 0; y < 9; y++) {
-            for(let x = 0; x < 9; x++) {
+        for(let y = 0; y < this.grid; y++) {
+            for(let x = 0; x < this.grid; x++) {
                 let thisSpot = this.getSpot(x, y);
                 for (let h = -1; h <= 1; h++) {
                     for (let v = -1; v <= 1; v++) {
@@ -59,7 +81,7 @@ export class Minefield {
 
 
     getSpot(x, y){
-        if(x >= 0 && x < 9 && y >=0 && y < 9) {
+        if(x >= 0 && x < this.grid && y >=0 && y < this.grid) {
             return this.rows[y].spots[x];
         } else {
             return null;
@@ -67,16 +89,15 @@ export class Minefield {
     }
 
     revealMines() {
-        for(let y = 0; y < 9; y++) {
-          for(let x = 0; x < 9; x++) {
-            let checkedSpot = this.getSpot(x, y);
-            if (checkedSpot.isMine) {
-              checkedSpot.isCovered = false;
+        for(let y = 0; y < this.grid; y++) {
+            for(let x = 0; x < this.grid; x++) {
+                let checkedSpot = this.getSpot(x, y);
+                if (checkedSpot.isMine) {
+                    checkedSpot.isCovered = false;
+                }
             }
-          }
         }
-      }
-    
+    }
 }
 
 export class Row {

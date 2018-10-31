@@ -1,23 +1,41 @@
 <div class="container">
   <h1 class="jumbotron">Minesweeper</h1>
-  <table class="minefield">
-    <tr *ngFor="let row of newMinefield.rows">
-      <td *ngFor="let spot of row.spots" (click)="uncoverSpot(spot)">
-        <img *ngIf="spot.clickedMine" src="../assets/img/mine-wrong.png">
-        <img *ngIf="spot.isCovered" src="../assets/img/covered.png">
-        <img *ngIf="!spot.isCovered && spot.isMine && !spot.clickedMine" src="../assets/img/mine.png">
-        <img *ngIf="!spot.isCovered && !spot.isMine && !spot.countMines" src="../assets/img/empty.png">
-        <span *ngIf="!spot.isCovered && !spot.isMine && spot.countMines">
-          <img src="../assets/img/number-{{spot.countMines}}.png">
-        </span>
-      </td>
-    </tr>
-  </table>
-  <br><br>
-  <div *ngIf="newMinefield.gameStatus === 'Game Over'" class="card">
-    <h3>Game Over...</h3>
+  <div *ngIf="!game">
+    <div class="form-group">
+      <label>Enter the grid size: {{gridSize}} x {{gridSize}}</label>
+      <input #grid [(ngModel)]="gridSize" class="form-control" type=number name="grid">
+    </div>
+    <div class="form-group">
+      <label>Select Difficulty: </label>
+      <select #difficulty class="form-control">
+        <option value="easy">Easy</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="difficult">Difficult</option>
+        <option value="expert">Expert</option>
+      </select>
+    </div>
+    <button (click)="newGame(grid.value, difficulty.value)">Start Game</button>
   </div>
-  <div *ngIf="newMinefield.gameStatus === 'You Win'" class="card">
-      <h3>You Win!!!</h3>
+  <div *ngIf="game">
+    <table *ngIf="game" class="minefield">
+      <tr *ngFor="let row of game.rows">
+        <td *ngFor="let spot of row.spots" (click)="uncoverSpot(spot)">
+          <img *ngIf="spot.clickedMine" src="../assets/img/mine-wrong.png">
+          <img *ngIf="spot.isCovered" src="../assets/img/covered.png">
+          <img *ngIf="!spot.isCovered && spot.isMine && !spot.clickedMine" src="../assets/img/mine.png">
+          <img *ngIf="!spot.isCovered && !spot.isMine && !spot.countMines" src="../assets/img/empty.png">
+          <span *ngIf="!spot.isCovered && !spot.isMine && spot.countMines">
+            <img src="../assets/img/number-{{spot.countMines}}.png">
+          </span>
+        </td>
+      </tr>
+    </table>
+    <br><br>
+    <div *ngIf="game.gameStatus === 'Game Over'" class="card">
+      <h3>Game Over...</h3>
+    </div>
+    <div *ngIf="game.gameStatus === 'You Win'" class="card">
+        <h3>You Win!!!</h3>
+    </div>
   </div>
 </div>
