@@ -111,6 +111,7 @@ export class Spot {
         public isCovered: boolean = true, 
         public isMine: boolean = false, 
         public countMines: number = 0,
-        public clickedMine: boolean = false
+        public clickedMine: boolean = false,
+        public mark: number = 0
     ) {}
 }

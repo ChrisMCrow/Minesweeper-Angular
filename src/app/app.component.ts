@@ -12,6 +12,14 @@ export class AppComponent implements OnInit {
   gridSize: number = 9;
   game: Minefield;
 
+  markSpot(spot) {
+    if (spot.mark < 2) {
+      spot.mark++;
+    } else {
+      spot.mark = 0;
+    }
+  }
+
   uncoverSpot(spot) {
     if (this.game.gameStatus === "In Progress") {
       if (spot.countMines === 0) {

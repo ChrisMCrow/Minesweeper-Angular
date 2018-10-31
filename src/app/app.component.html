@@ -19,9 +19,9 @@
   <div *ngIf="game">
     <table *ngIf="game" class="minefield">
       <tr *ngFor="let row of game.rows">
-        <td *ngFor="let spot of row.spots" (click)="uncoverSpot(spot)">
+        <td *ngFor="let spot of row.spots" (click)="markSpot(spot)" (dblclick)="uncoverSpot(spot)">
           <img *ngIf="spot.clickedMine" src="../assets/img/mine-wrong.png">
-          <img *ngIf="spot.isCovered" src="../assets/img/covered.png">
+          <img *ngIf="spot.isCovered" src="../assets/img/covered-{{spot.mark}}.png">
           <img *ngIf="!spot.isCovered && spot.isMine && !spot.clickedMine" src="../assets/img/mine.png">
           <img *ngIf="!spot.isCovered && !spot.isMine && !spot.countMines" src="../assets/img/empty.png">
           <span *ngIf="!spot.isCovered && !spot.isMine && spot.countMines">
@@ -30,6 +30,8 @@
         </td>
       </tr>
     </table>
+    <br>
+    <p>click to mark tile, double click to uncover</p>
     <br><br>
     <div *ngIf="game.gameStatus === 'Game Over'" class="card">
       <h3>Game Over...</h3>
