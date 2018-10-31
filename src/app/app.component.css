@@ -9,9 +9,14 @@
 
 table {
   border: 5px ridge gray;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 p {
   color: gray;
   font-family: monospace;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }

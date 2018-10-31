@@ -9,7 +9,7 @@ import { Minefield, Row, Spot } from './minefield.model';
 })
 export class AppComponent implements OnInit {
   title = 'app';
-  gridSize: number = 9;
+  gridSize: number = 20;
   game: Minefield;
 
   markSpot(spot) {
