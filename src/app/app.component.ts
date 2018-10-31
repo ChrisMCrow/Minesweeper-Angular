@@ -11,8 +11,36 @@ export class AppComponent implements OnInit {
   newMinefield: Minefield;
 
   uncoverSpot(spot) {
-    spot.isCovered = false;
+    if (this.newMinefield.gameStatus === "In Progress") {
+      if (spot.countMines === 0) {
+        this.newMinefield.expandBlanks(spot);
+      }
+      if (spot.isMine) {
+        spot.clickedMine = true;
+      }
+      spot.isCovered = false;
+      this.isGameOver();
+    }
   }
+
+  isGameOver() {
+    let counter: number = 0;
+    for(let y = 0; y < 9; y++) {
+      for(let x = 0; x < 9; x++) {
+        let checkedSpot = this.newMinefield.getSpot(x, y);
+        if (checkedSpot.isMine && !checkedSpot.isCovered) {
+          this.newMinefield.gameStatus = "Game Over";
+          this.newMinefield.revealMines();
+        } else if (!checkedSpot.isCovered) {
+          counter++;
+        }
+      }
+    }
+    if (counter === 81 - this.newMinefield.mineNumber) {
+      this.newMinefield.gameStatus = "You Win";
+    }
+  }
+
   
   ngOnInit() {
     this.newMinefield = new Minefield();

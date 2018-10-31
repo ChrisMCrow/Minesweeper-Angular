@@ -3,23 +3,21 @@
   <table class="minefield">
     <tr *ngFor="let row of newMinefield.rows">
       <td *ngFor="let spot of row.spots" (click)="uncoverSpot(spot)">
-        <!-- <img *ngIf="spot.isCovered" src="../assets/img/covered.png"> -->
-        <!-- <img *ngIf="!spot.isCovered && spot.isMine && " src="../assets/img/mine.png"> -->
-        <!-- <img *ngIf="!spot.isCovered && !spot.isMine" src="../assets/img/empty.png"> -->
-        <img *ngIf="spot.isMine" src="../assets/img/mine.png">
-        <p *ngIf="!spot.isMine">{{spot.countMines}}</p>
+        <img *ngIf="spot.clickedMine" src="../assets/img/mine-wrong.png">
+        <img *ngIf="spot.isCovered" src="../assets/img/covered.png">
+        <img *ngIf="!spot.isCovered && spot.isMine && !spot.clickedMine" src="../assets/img/mine.png">
+        <img *ngIf="!spot.isCovered && !spot.isMine && !spot.countMines" src="../assets/img/empty.png">
+        <span *ngIf="!spot.isCovered && !spot.isMine && spot.countMines">
+          <img src="../assets/img/number-{{spot.countMines}}.png">
+        </span>
       </td>
     </tr>
   </table>
+  <br><br>
+  <div *ngIf="newMinefield.gameStatus === 'Game Over'" class="card">
+    <h3>Game Over...</h3>
+  </div>
+  <div *ngIf="newMinefield.gameStatus === 'You Win'" class="card">
+      <h3>You Win!!!</h3>
+  </div>
 </div>
-
-<!-- let thisSpot = this.getSpot(x, y);
-for (let i = -1; i <= 1; i++) {
-    for (let j = -1; j <= 1; j++) {
-        if (this.getSpot(x + i, y + j)) {
-            if (this.getSpot(x + i, y + j).isMine) {
-                thisSpot.countMines++;
-            }
-        }
-    }
-} -->
