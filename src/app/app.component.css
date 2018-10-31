@@ -1,0 +1,14 @@
+.minefield {
+  line-height:0;
+  border-spacing:0;
+}
+
+.minefield td {
+  padding: 0;
+}
+
+p {
+  width: 24px;
+  text-align: center;
+  padding-top: 12px;
+}
